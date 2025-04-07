@@ -1,6 +1,6 @@
 package com.example.apicompose.web
 
-import com.example.apicompose.repository.remote.FilmApi
+import com.example.apicompose.domain.remote.FilmApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,14 +24,15 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level=HttpLoggingInterceptor.Level.BODY
+        val logger = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
         return Retrofit.Builder()
             .baseUrl("https://api.kinopoisk.dev/")
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(ApiKeyInterceptor())
-                    .addInterceptor(interceptor)
+                    .addInterceptor(logger)
                     .build()
             )
             .addConverterFactory(GsonConverterFactory.create())

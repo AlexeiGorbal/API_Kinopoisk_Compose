@@ -1,8 +1,7 @@
-package com.example.apicompose.repository.remote
+package com.example.apicompose.domain.remote
 
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface FilmApi {
     @GET("v1.4/movie?page=1&limit=10&typeNumber=1&rating.kp=7-10&ageRating=12-18")

@@ -20,20 +20,21 @@ import coil3.compose.AsyncImage
 fun InformationScreen(
     modifier: Modifier = Modifier,
     id: Long,
-    viewModel: InformationScreenViewModel = hiltViewModel()
+    viewModel: InformationScreenViewModel = hiltViewModel(),
 ) {
+    val film by viewModel.film.collectAsState()
+
     LaunchedEffect(key1 = Unit) {
         viewModel.getFilmById(id)
     }
 
-    val film by viewModel.film.collectAsState(null)
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        film?.let {
-            Poster(it.poster.url)
+        film?.also {
+            Poster(it.posterUrl)
             Name(it.name)
             Year(it.year)
             Description(it.description)
@@ -53,7 +54,8 @@ fun Poster(
 ) {
     AsyncImage(
         model = poster,
-        contentDescription = null
+        contentDescription = null,
+        modifier = modifier
     )
 }
 
@@ -63,8 +65,8 @@ fun Name(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        name,
-        modifier.padding(vertical = 6.dp),
+        text = name,
+        modifier = modifier.padding(vertical = 6.dp),
         fontSize = 30.sp
     )
 }
@@ -72,7 +74,7 @@ fun Name(
 @Composable
 fun Description(
     description: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         description,
@@ -83,31 +85,43 @@ fun Description(
 @Composable
 fun Year(
     year: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Text("Year: $year")
+    Text(
+        text = "Year: $year",
+        modifier = modifier
+    )
 }
 
 @Composable
 fun Type(
     type: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Text("Type: $type")
+    Text(
+        text = "Type: $type",
+        modifier = modifier
+    )
 }
 
 @Composable
 fun FilmLength(
     filmLength: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Text("Film length: $filmLength")
+    Text(
+        text = "Film length: $filmLength",
+        modifier = modifier
+    )
 }
 
 @Composable
 fun AgeRating(
     age: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Text("Age rating: $age")
+    Text(
+        text = "Age rating: $age",
+        modifier = modifier
+    )
 }

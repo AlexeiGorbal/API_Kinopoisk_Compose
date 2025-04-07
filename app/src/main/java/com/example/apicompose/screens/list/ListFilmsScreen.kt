@@ -18,24 +18,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
-import com.example.apicompose.screens.Film
+import com.example.apicompose.domain.Film
 
 @Composable
 fun ListFilmsScreen(
     modifier: Modifier = Modifier,
     onNavToInfScreen: (Long) -> Unit,
-    viewModel: ListFilmsViewModel = hiltViewModel()
+    viewModel: ListFilmsViewModel = hiltViewModel(),
 ) {
-    val films = viewModel.films.collectAsState(null)
+    val films by viewModel.films.collectAsState()
 
     LazyColumn(modifier) {
-        films.value?.let { value ->
-            items(value.films.films) { film ->
+        films?.also {
+            items(it) { film ->
                 FilmItem(film, { onNavToInfScreen(it.id) })
             }
         }
@@ -46,13 +47,11 @@ fun ListFilmsScreen(
 fun FilmItem(
     film: Film,
     onItemClick: (Film) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
-
     Card(
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
+        modifier = modifier
             .clickable { onItemClick(film) }
             .padding(10.dp)
     ) {
@@ -61,29 +60,29 @@ fun FilmItem(
             modifier = Modifier.height(IntrinsicSize.Min)
         ) {
             AsyncImage(
-                model = film.poster.url,
+                model = film.posterUrl,
                 contentDescription = null
             )
             VerticalDivider(
-                Modifier
+                modifier = Modifier
                     .fillMaxHeight()
                     .width(1.dp)
             )
             Column {
                 Text(
-                    film.name,
-                    Modifier
+                    text = film.name,
+                    modifier = Modifier
                         .padding(start = 10.dp)
                         .weight(1f)
                 )
                 HorizontalDivider(
-                    Modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .width(1.dp)
                 )
                 Text(
-                    film.description,
-                    Modifier
+                    text = film.description,
+                    modifier = Modifier
                         .padding(start = 10.dp)
                         .weight(1f),
                     maxLines = 1

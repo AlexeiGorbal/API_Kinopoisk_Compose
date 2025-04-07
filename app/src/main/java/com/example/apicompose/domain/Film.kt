@@ -1,6 +1,4 @@
-package com.example.apicompose.screens
-
-data class Films(val films: List<Film>)
+package com.example.apicompose.domain
 
 data class Film(
     val id: Long,
@@ -10,7 +8,5 @@ data class Film(
     val description: String,
     val filmLength: Int,
     val ageRating: Int,
-    val poster: Poster
+    val posterUrl: String,
 )
-
-data class Poster(val url: String)
